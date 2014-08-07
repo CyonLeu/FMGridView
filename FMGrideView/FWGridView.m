@@ -134,28 +134,23 @@
         residue = 1;
     }
     
-    CGFloat cellSpace = 0.f;
-    do {
-        CGFloat sumWidthOfCells = 0.f;
-        for (NSInteger i=0; i < self.numOfColumns; i++)
+    CGFloat sumWidthOfCells = 0.f;
+    for (NSInteger i=0; i < self.numOfColumns; i++)
+    {
+        CGFloat cellWith = kCellWidthDefault;
+        if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:widthForColumnAt:)])
         {
-            CGFloat cellWith = kCellWidthDefault;
-            if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:widthForColumnAt:)])
-            {
-                cellWith = [self.gridViewDelegate gridView:self widthForColumnAt:i];
+            cellWith = [self.gridViewDelegate gridView:self widthForColumnAt:i];
+        }
+        sumWidthOfCells += cellWith;
+        if (sumWidthOfCells > tableView.bounds.size.width)
+        {
+            self.numOfColumns = i ;
+            if (self.numOfColumns < 1) {
+                self.numOfColumns = 1;
             }
-            sumWidthOfCells += cellWith;
         }
-        
-        cellSpace = (tableView.bounds.size.width - sumWidthOfCells) / (CGFloat)(self.numOfColumns + 1);
-        if (cellSpace < 0) {
-            self.numOfColumns -= 1;
-        }
-        
-    }while (cellSpace < 0);
-   
-    NSUInteger rows = ([gridViewDelegate numberOfCellsOfGridView:self] / self.numOfColumns) + residue;
-    NSLog(@"rows= %d; columns= %d", rows, self.numOfColumns);
+    }
     
 	return ([gridViewDelegate numberOfCellsOfGridView:self] / self.numOfColumns) + residue;
 }

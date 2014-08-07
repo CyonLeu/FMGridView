@@ -38,8 +38,8 @@
 
 - (CGFloat) gridView:(FWGridView *)grid widthForColumnAt:(NSInteger)columnIndex
 {
-//    if (columnIndex == 1) {
-//        return 100;
+//    if (columnIndex == 0) {
+//        return 160;
 //    }
 //    
 //    if (columnIndex % 2 == 0) {
@@ -67,7 +67,7 @@
     cell.thumbnail.image = [UIImage imageNamed:@"wechat"];
 //    cell.thumbnail.highlightedImage = [UIImage imageNamed:@"txweibo"];
     cell.label.text = @"微信朋友圈";
-    
+    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
     
     return cell;
 }
