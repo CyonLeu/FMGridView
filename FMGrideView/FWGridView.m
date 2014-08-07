@@ -53,6 +53,7 @@
     self.delegate = self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.numOfColumns = 4;
 }
 
 /*
@@ -126,21 +127,44 @@
         return 0;
     }
     
-	int residue =  ([self.gridViewDelegate numberOfCellsOfGridView:self] % [self.gridViewDelegate numberOfColumnsOfGridView:self]);
+	int residue =  ([self.gridViewDelegate numberOfCellsOfGridView:self] % self.numOfColumns);
 	
 	if (residue > 0)
     {
         residue = 1;
     }
-	
-	return ([gridViewDelegate numberOfCellsOfGridView:self] / [gridViewDelegate numberOfColumnsOfGridView:self]) + residue;
+    
+    CGFloat cellSpace = 0.f;
+    do {
+        CGFloat sumWidthOfCells = 0.f;
+        for (NSInteger i=0; i < self.numOfColumns; i++)
+        {
+            CGFloat cellWith = kCellWidthDefault;
+            if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:widthForColumnAt:)])
+            {
+                cellWith = [self.gridViewDelegate gridView:self widthForColumnAt:i];
+            }
+            sumWidthOfCells += cellWith;
+        }
+        
+        cellSpace = (tableView.bounds.size.width - sumWidthOfCells) / (CGFloat)(self.numOfColumns + 1);
+        if (cellSpace < 0) {
+            self.numOfColumns -= 1;
+        }
+        
+    }while (cellSpace < 0);
+   
+    NSUInteger rows = ([gridViewDelegate numberOfCellsOfGridView:self] / self.numOfColumns) + residue;
+    NSLog(@"rows= %d; columns= %d", rows, self.numOfColumns);
+    
+	return ([gridViewDelegate numberOfCellsOfGridView:self] / self.numOfColumns) + residue;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.gridViewDelegate == nil)
+    if (self.gridViewDelegate == nil || ![self.gridViewDelegate respondsToSelector:@selector(gridView:heightForRowAt:)])
     {
-        return 80;
+        return kCellHeightDefault;
     }
     
     CGFloat rowSpace = 0.0f;//若不在外设置列边距，则默认为0
@@ -162,16 +186,15 @@
         gridViewRow = [[FWGridViewRow alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
     }
 	
-	NSInteger numColumns = [self.gridViewDelegate numberOfColumnsOfGridView:self];
 	NSInteger countCells = [self.gridViewDelegate numberOfCellsOfGridView:self];
 	
 	CGFloat x = 0;
 	CGFloat height = [self.gridViewDelegate gridView:self heightForRowAt:indexPath.row];
 	
-	for (NSInteger i=0; i < numColumns; i++)
+	for (NSInteger i=0; i < self.numOfColumns; i++)
     {
         //若当前行所需要显示的cell列少于numColums时，需要隐藏该cell
-		if ((i + indexPath.row * numColumns) >= countCells)
+		if ((i + indexPath.row * self.numOfColumns) >= countCells)
         {
 			if ([gridViewRow.contentView.subviews count] > i)
             {
@@ -216,27 +239,48 @@
         {
             cell.titleHeight = [self.gridViewDelegate gridView:self titleHeightForCellGridIndex:index];
         }
-        
-		CGFloat thisWidth = [gridViewDelegate gridView:self widthForColumnAt:i];
+       
+        CGFloat cellWidth = kCellWidthDefault;
+        if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:widthForColumnAt:)]) {
+            cellWidth = [self.gridViewDelegate gridView:self widthForColumnAt:i];
+        }
+		
         CGFloat rowSpace = 0.0f;//若不在外设置行边距，则默认为0
         if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:spaceForRowAt:)])
         {
             rowSpace = [self.gridViewDelegate gridView:self spaceForRowAt:indexPath.row];
         }
-        
-		cell.frame = CGRectMake(x, rowSpace, thisWidth, height);
-        
-        CGFloat cellSpace = 0.0f;//若不在外设置列边距，则默认为0
-        if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:spaceForCellGridIndex:)])
+        CGFloat cellSpace = 0.f;
+        CGFloat sumWidthOfCells = 0.f;
+        for (NSInteger i=0; i < self.numOfColumns; i++)
         {
-            cellSpace = [self.gridViewDelegate gridView:self spaceForCellGridIndex:index];
+            CGFloat cellWith = kCellWidthDefault;
+            if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:widthForColumnAt:)])
+            {
+                cellWith = [self.gridViewDelegate gridView:self widthForColumnAt:i];
+            }
+            sumWidthOfCells += cellWith;
         }
         
-		x += thisWidth + cellSpace;
+        cellSpace = (tableView.bounds.size.width - sumWidthOfCells) / (CGFloat)(self.numOfColumns + 1);
+        if (cellSpace <= 0) {
+            cellSpace = 0;
+        }
+        else if (self.gridViewDelegate && [self.gridViewDelegate respondsToSelector:@selector(gridView:spaceForCellGridIndex:)])
+        {
+            CGFloat customCellSpace = [self.gridViewDelegate gridView:self spaceForCellGridIndex:index];
+            if (cellSpace < customCellSpace)
+            {
+                cellSpace = customCellSpace;
+            }
+        }
+        
+		cell.frame = CGRectMake(x + cellSpace, rowSpace, cellWidth, height);
+//        NSLog(@"cell.frame= %@", NSStringFromCGRect(cell.frame));
+		x += cellWidth + cellSpace;
+        
 	}
     
-    //	gridViewRow.frame = CGRectMake(gridViewRow.frame.origin.x, gridViewRow.frame.origin.y, x, height + rowSpace);
-	
     return gridViewRow;
 }
 

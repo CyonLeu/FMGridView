@@ -24,6 +24,8 @@
 		0252C24119935ECD0050FF7E /* FWGridViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0252C24019935ECD0050FF7E /* FWGridViewRow.m */; };
 		0252C24419935EED0050FF7E /* FWGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0252C24319935EED0050FF7E /* FWGridView.m */; };
 		0252C245199363800050FF7E /* FWGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0252C23D19935E7F0050FF7E /* FWGridViewCell.m */; };
+		E68E46D519937D7B00A188C9 /* wechat.png in Resources */ = {isa = PBXBuildFile; fileRef = E68E46D419937D7B00A188C9 /* wechat.png */; };
+		E68E46D9199397E800A188C9 /* txweibo.png in Resources */ = {isa = PBXBuildFile; fileRef = E68E46D8199397E800A188C9 /* txweibo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		0252C24019935ECD0050FF7E /* FWGridViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWGridViewRow.m; sourceTree = "<group>"; };
 		0252C24219935EED0050FF7E /* FWGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWGridView.h; sourceTree = "<group>"; };
 		0252C24319935EED0050FF7E /* FWGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWGridView.m; sourceTree = "<group>"; };
+		E68E46D419937D7B00A188C9 /* wechat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wechat.png; sourceTree = "<group>"; };
+		E68E46D8199397E800A188C9 /* txweibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txweibo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +140,8 @@
 		0252C20D19935C9B0050FF7E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E68E46D8199397E800A188C9 /* txweibo.png */,
+				E68E46D419937D7B00A188C9 /* wechat.png */,
 				0252C20E19935C9B0050FF7E /* FMGridViewDemo-Info.plist */,
 				0252C20F19935C9B0050FF7E /* InfoPlist.strings */,
 				0252C21219935C9B0050FF7E /* main.m */,
@@ -254,6 +260,8 @@
 			files = (
 				0252C21F19935C9B0050FF7E /* Images.xcassets in Resources */,
 				0252C21119935C9B0050FF7E /* InfoPlist.strings in Resources */,
+				E68E46D519937D7B00A188C9 /* wechat.png in Resources */,
+				E68E46D9199397E800A188C9 /* txweibo.png in Resources */,
 				0252C21A19935C9B0050FF7E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,6 +496,7 @@
 				0252C23719935C9B0050FF7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0252C23819935C9B0050FF7E /* Build configuration list for PBXNativeTarget "FMGridViewDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +505,7 @@
 				0252C23A19935C9B0050FF7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

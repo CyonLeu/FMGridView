@@ -96,7 +96,7 @@
         self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds] ;
         self.selectedBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.selectedBackgroundView.userInteractionEnabled = NO;
-        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:255 alpha:0.6];
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
         self.selectedBackgroundView.hidden = YES;
         [self addSubview:self.selectedBackgroundView];
         
@@ -114,12 +114,12 @@
         if (_gridViewCellStyle == FWGridViewCellStyleTitle)
         {
             self.label = [[UILabel alloc] init] ;
-            self.label.font = [UIFont systemFontOfSize:10];
+            self.label.font = [UIFont systemFontOfSize:14];
             self.label.textAlignment = NSTextAlignmentCenter;
             self.label.backgroundColor = [UIColor clearColor];
             self.label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin| UIViewAutoresizingFlexibleRightMargin;
             
-            self.titleHeight = kCellTitleHeight;
+            self.titleHeight = kCellTitleHeightDefault;
             [self addSubview:self.label];
         }
         self.thumbnail.frame = thumbFrame;
@@ -142,7 +142,7 @@
     CGRect thumbFrame = self.bounds;
     if (_gridViewCellStyle == FWGridViewCellStyleTitle)
     {
-        self.label.frame = CGRectMake(thumbFrame.origin.x - thumbFrame.size.width * 0.125, self.bounds.size.height - self.titleHeight, thumbFrame.size.width * 1.25, self.titleHeight);
+        self.label.frame = CGRectMake(0, self.bounds.size.height - self.titleHeight, self.bounds.size.width, self.titleHeight);
         thumbFrame.size.height = self.bounds.size.height - self.titleHeight;
     }
     self.thumbnail.frame = thumbFrame;
@@ -171,6 +171,7 @@
 - (void)setBSelected:(BOOL)selected
 {
     bSelected = selected;
+    [self.thumbnail setHighlighted:selected];
     if (bSelected == YES)
     {
         self.backgroundView.hidden = YES;

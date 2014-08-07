@@ -19,8 +19,14 @@
 @property (nonatomic, assign) id<FWGridViewDelegate> gridViewDelegate;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) FWGridViewIndex *selectedIndex;
+@property (nonatomic) NSUInteger numOfColumns;//default is 4
 
-//外部可用方法
+
+/**
+ *  /外部可用方法
+ *
+ **/
+
 //获取可重用的cell
 - (FWGridViewCell *) dequeueReusableCell;
 
@@ -36,21 +42,28 @@
 @protocol FWGridViewDelegate  <NSObject>
 
 @required
-- (CGFloat) gridView:(FWGridView *)grid widthForColumnAt:(NSInteger)columnIndex;
-- (CGFloat) gridView:(FWGridView *)grid heightForRowAt:(NSInteger)rowIndex;
-
-- (NSInteger) numberOfColumnsOfGridView:(FWGridView *) grid;
 - (NSInteger) numberOfCellsOfGridView:(FWGridView *) grid;
 
 - (FWGridViewCell *) gridView:(FWGridView *)grid cellForGridIndex:(FWGridViewIndex *)gridIndex;
 
 @optional
+/*
+ *default: 80
+ */
+- (CGFloat) gridView:(FWGridView *)grid widthForColumnAt:(NSInteger)columnIndex;
 
 /*
- *获取用户选中的cell
+ *default: 80
  */
+- (CGFloat) gridView:(FWGridView *)grid heightForRowAt:(NSInteger)rowIndex;
+
 - (void) gridView:(FWGridView *)grid didSelectCell:(FWGridViewCell *)cell;
 
+/*
+ *default: 4
+ */
+
+- (NSInteger) numberOfColumnsOfGridView:(FWGridView *) grid;
 /*
  *行间距，获取当前行与上一行的间距：竖向间距 default:0
  */

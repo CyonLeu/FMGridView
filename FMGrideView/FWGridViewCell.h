@@ -14,7 +14,14 @@ typedef enum{
     
 } FWGridViewCellStyle;
 
-#define kCellTitleHeight 20
+#define kCellTitleHeightDefault 20
+#define kCellWidthDefault 80
+#define kCellHeightDefault 80
+
+/**
+ *  @brief  iconHeight = cellHeight - titleHeight
+ */
+
 
 @interface FWGridViewIndex : NSObject
 {
